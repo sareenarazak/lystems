@@ -14,5 +14,7 @@
 ### Pkg config
 1. Set up ESLint and prettier
 ### Later - maybe
-1. Can I do this in rust 
-2. 
+1. Can I do this in rust
+
+
+
