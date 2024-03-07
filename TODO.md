@@ -4,8 +4,8 @@
 3. Take generations as input 
 
 ### Generalized input 
-1. Add angle, constants and variables in lystem config 
-2. Add letter to movement config
+~~1. Add angle, constants and variables in lystem config~~ 
+~~2. Add letter to movement config~~
 
 
 ### Specific ones
@@ -13,8 +13,10 @@
 
 ### Pkg config
 1. Set up ESLint and prettier
+
+
 ### Later - maybe
-1. Can I do this in rust
+~~1. Can I do this in rust --> yes~~ 
 
 
 
