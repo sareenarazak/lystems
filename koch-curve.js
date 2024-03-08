@@ -6,7 +6,7 @@ const lystem = new Lystem("F");
 
 lystem.addRule("F", "FF+[+F-F-F]-[-F+F+F]");
 lystem.addRule("F", "F+F−F−F+F");
-const generations  = 4;
+const generations  = 10;
 const testTurtle = new Turtle(ctx, 10, 10, 0 );
 
 lystem.draw(generations, testTurtle);
