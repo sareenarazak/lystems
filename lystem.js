@@ -1,58 +1,57 @@
-export class Lystem {
-    constructor(axiom, rules = new Map()) {
-        this.axiom = axiom;
-        this.rules = rules;
-    }
+export const createContext = ({ axiom, turtle, ...rest }) => {
+    if (axiom === undefined) throw new Error("axiom required");
+    if (turtle === undefined) throw new Error("turtle required");
 
-    addRule(symbol, rule) {
-        this.rules.set(symbol, rule);
-    }
+    return {
+        rules: {},
+        symbolTable: BaseSymbolTable,
 
-    generate(iterations) {
-        let state = this.axiom;
-        for (let i = 0; i < iterations; i++) {
-            state = this.applyRules(state);
-        }
-        return state;
-    }
+        axiom,
+        turtle,
+        // if this contains rules - overwrites the above values
+        ...rest
+    };
+}
 
-
-    applyRules(state) {
-        return state.split('')
-            .map(symbol => this.rules.get(symbol) || symbol)
+export function generate({ axiom, rules }, iterations) {
+    let state = axiom;
+    for (let i = 0; i < iterations; i++) {
+        state = state.split('')
+            .map(symbol => rules[symbol] || symbol)
             .join('');
     }
+    return state;
+}
 
-
-    draw(count, turtle) {
-        const result = this.generate(count);
-        console.log(result);
-
-        turtle.setupCanvas();
-        for(let i = 0; i < result.length; i++) {
-            const r = result[i];
-            switch(r) {
-                case  'F':
-                    turtle.forward(10);
-                    break;
-                case '+':
-                    turtle.turnLeft(90);
-                    break;
-                case '−':
-                    turtle.turnRight(90);
-                    break;
-                case '[':
-                    turtle.save();
-                    break;
-                case ']':
-                    turtle.restore();
-                    break;
-
-                default:
-                    console.log(r);
-                    console.log("invalid symbol");
-
-            }
+export function draw(ctx, generated) {
+    const { symbolTable } = ctx;
+    for(let i = 0; i < generated.length; i++) {
+        const r = generated[i];
+        if (!(r in symbolTable)) {
+            throw new Error("invalid symbol '" + r + "' " + r.charCodeAt(0));
         }
+
+        symbolTable[r](ctx);
     }
 }
+
+export const BaseSymbolTable = {
+    F: ({ turtle }) => {
+        turtle.forward(10);
+    },
+    '+': ({ turtle }) => {
+        turtle.turnLeft(90);
+    },
+
+    '-':({ turtle }) => {
+        turtle.turnRight(90);
+    },
+
+    '[': ({ turtle }) => {
+        turtle.save();
+    },
+
+    ']': ({ turtle }) => {
+        turtle.restore();
+    },
+};
